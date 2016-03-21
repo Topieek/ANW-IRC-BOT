@@ -3,6 +3,8 @@
 	define("VERSION", "v1.00");
 	define("MADE_BY", "topiek");
 	
+	date_default_timezone_set('UTC');
+	
 	print "  _____ _____   _____   ____        _   " . N;
 	print " |_   _|  __ \ / ____| |  _ \      | |  " . N;
 	print "   | | | |__) | |      | |_) | ___ | |_ " . N;
@@ -113,11 +115,28 @@
 							case "cmds":
 								say("!cmds || Laat alle beschikbare commando's zien");
 								break;
+							case "vt":
+								say("!vt [gewilde aankomsttijd] [transporttijd] || Bereken wanneer je je aanval moet versturen. Tijd is hh:mm:ss");
+								break;
 							default:
 								say("!" . $ex[4] . " niet gevonden");
 								break;
 						}
 					}
+				}
+				
+				/* -------------------------------------- */
+				/* ----------------- VT ----------------- */
+				/* -------------------------------------- */
+				
+				if($command == ":!vt") {
+					print("!vt called" . N);
+					
+					if(!isset($ex[4]) OR !isset($ex[5])) { say("Gebruik: !vt [gewilde aankomsttijd] [transporttijd] (hh:mm:ss)"); } else { $p1 = $ex[4]; $p2 = $ex[5]; }
+					
+					$nTijd = strtotime($p1) - strtotime($p2);
+					$sTijd = date("H:i:s", $nTijd);
+					say("Je aanval moet om: " . $sTijd . " verstuurd worden, en zal dan om " . $p1 . " aankomen.");
 				}
 				
 				/* -------------------------------------- */
@@ -127,7 +146,7 @@
 				if($command == ":!lijst" OR $command == ":!list" OR $command == ":!cmd" OR $command == ":!cmds") {
 					$command = str_replace(":", "", $command);
 					print($command . " called". N);
-					say("!tijd, !time, !lijst, !list, !cmd, !cmds, !say, !help");
+					say("!tijd, !time, !lijst, !list, !cmd, !cmds, !say, !help, !vt");
 				}
 			}
 		}
